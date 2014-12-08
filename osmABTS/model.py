@@ -10,7 +10,7 @@ most class in this project and is the one that mostly interacts with the users.
 from .readosm import read_osm
 from .network import form_network_from_osm
 from .places import form_places_from_osm, DEFAULT_PLACE_CATS
-from .travellers import Traveller
+from .travellers import Traveller, DEFAULT_ATTRS
 from .trips import gen_trips, DEFAULT_TRIPS
 from .paths import ShortestPath
 
@@ -131,21 +131,25 @@ class Model(object):
             self.raw_osm, self.network, place_cats
             )
 
-    def form_travellers(self, number):
+    def form_travellers(self, number, attrs=None):
 
         """Forms a list of travellers
 
         :param number: The number of travellers to form
+        :param attrs: A dictionary with attribute name as key and the place
+            category name as entry. For each key, the travellers with carry an
+            attribute with that name and a place selection from the category in
+            the places dictionary.
 
         """
 
-        if self.network is None:
-            raise ValueError('Network unavailable for traveller generation')
+        attrs = attrs or DEFAULT_ATTRS
+
         if self.places is None:
             raise ValueError('Places unavailable for traveller generation')
 
         self.travellers = [
-            Traveller(self.network, self.places)
+            Traveller(self.places, attrs)
             for _ in xrange(0, number)
             ]
 
