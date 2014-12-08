@@ -20,10 +20,17 @@ The driver function is in
 
 .. autofunction:: form_network_from_osm
 
+And we have IO functions
+
+.. autofunction:: node2str
+
+.. autofunction:: edge2str
+
 """
 
 import networkx as nx
 from geopy.distance import vincenty
+import matplotlib.pyplot as plt
 
 
 #
@@ -149,3 +156,69 @@ def form_network_from_osm(raw_osm):
                 distance = 0.0
 
     return net
+
+
+#
+# IO functions
+# ------------
+#
+
+def node2str(net, node):
+
+    """Converts a node into a string
+
+    The result will be written as the junction of the roads that the node is
+    connected to.
+
+    :param net: The network
+    :param node: The node id
+
+    """
+
+    edge_names = set(
+        attrs['name'] for _, attrs in net[node].iteritems()
+        )
+
+    return 'junction of ' + ', '.join(edge_names)
+
+
+def edge2str(net, edge):
+
+    """Converts an edge into a string
+
+    All the basic information are put.
+
+    :param net: The network
+    :param edge: The node pair of an edge as in the ``edges`` method of the
+        network
+
+    """
+
+    beg, end = edge
+    data = net[beg][end]
+
+    return ' %s road %s, length %s mile, travel time %s hour' % (
+        data['highway'], data['name'], data['length'], data['travel_time']
+        )
+
+
+def draw_network(net, out_name):
+
+    """Draws the network to a graphics file
+
+    The actual drawing is performed by matplotlib interface of the networkX
+    library.
+
+    """
+
+    pos = {
+        key: data['coord']
+        for key, data in net.nodes_iter(data=True)
+        }
+
+    nx.draw_networkx(net, pos=pos, with_labels=False, node_size=32)
+    plt.axis('off')
+    plt.savefig(out_name)
+
+    return None
+
