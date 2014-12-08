@@ -13,6 +13,8 @@ the standard expat library.
 
 import xml.parsers.expat as expat
 
+import numpy as np
+
 
 #
 # Class definitions
@@ -50,9 +52,9 @@ class Node(object):
 
         """
 
-        self.coord = (
-            float(attrs['lat']),
-            float(attrs['lon']),
+        self.coord = np.array(
+            (attrs['lat'], attrs['lon']),
+            dtype=np.float64
             )
         self.tags = {}
 
