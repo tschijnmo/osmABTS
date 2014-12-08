@@ -2,5 +2,88 @@
 Trip generation
 ===============
 
+This module can be roughtly devided into two parts, the trip description and
+trip generation. The trip description part contains mostly class definitions
+that can be used to describe kinds of trips, while the trip generation contains
+the main driver function to generate a large list of trips based on the
+travellers and places. This module is kind of at the centre of the simulation.
+
 """
 
+import random
+import collections
+
+
+#
+# Trip description
+# ----------------
+#
+# The trips can be roughtly described by two data structures, Location and
+# Trip. A location is a location in the ways of a trip, and a trip is a series
+# of locations with a mean frequency and variation.
+#
+# The location can be an attribute of the traveller or a random selection in a
+# category of places. It is stored in the ``source`` attribute as one of the
+# two constant symbols in this module. And a trip has a frequency stored in the
+# ``freq`` attribute in unit of times per week, and ``var`` stores the
+# corresponding variation. The list of locations are given in the ``locations``
+# attribute, while the actual route is given in the route attribute as a list
+# of zero-based indices in the locations list.
+#
+
+# constants for the two kinds of locations
+TRAVELLER_ATTR = 1
+RANDOM_FROM_CAT = 2
+# Location class definition
+Location = collections.namedtuple(
+    'Location',
+    ['source', 'value']
+    )
+
+
+Trip = collections.namedtuple(
+    'Trip',
+    ['freq', 'var', 'locations', 'route']
+    )
+
+
+# The default trip
+
+DEFAULT_TRIP = [
+    # Commuting to work
+    Trip(
+        freq=5.0, var=1.0,
+        locations=[
+            Location(source=TRAVELLER_ATTR, value='home'),
+            Location(source=TRAVELLER_ATTR, value='work'),
+            ],
+        route=[0, 1, 0]
+        ),
+    # Go to a leisure place
+    Trip(
+        freq=2.0, var=0.5,
+        locations=[
+            Location(source=TRAVELLER_ATTR, value='home'),
+            Location(source=RANDOM_FROM_CAT, value='leisure'),
+            ],
+        route=[0, 1, 0]
+        ),
+    # Go to a restaurant
+    Trip(
+        freq=4.0, var=1.0,
+        locations=[
+            Location(source=TRAVELLER_ATTR, value='home'),
+            Location(source=RANDOM_FROM_CAT, value='restaurant'),
+            ],
+        route=[0, 1, 0]
+        ),
+    # Go to a church
+    Trip(
+        freq=1.0, var=0.5,
+        locations=[
+            Location(source=TRAVELLER_ATTR, value='home'),
+            Location(source=TRAVELLER_ATTR, value='church'),
+            ],
+        route=[0, 1, 0]
+        ),
+]
