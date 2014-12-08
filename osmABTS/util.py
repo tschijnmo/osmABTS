@@ -6,6 +6,7 @@ Some utility functions
 
 import random
 import bisect
+import itertools
 
 
 def select_place(places):
@@ -26,3 +27,15 @@ def select_place(places):
 
     rand_n = random.uniform(0.0, weights[-1])
     return places[bisect.bisect(weights, rand_n) - 1]
+
+
+def pairwise(iterable):
+
+    """s -> (s0,s1), (s1,s2), (s2, s3), ...
+
+    From the official itertools recipes.
+
+    """
+    a, b = itertools.tee(iterable)
+    next(b, None)
+    return itertools.izip(a, b)
