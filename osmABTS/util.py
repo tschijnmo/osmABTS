@@ -2,6 +2,12 @@
 Some utility functions
 ======================
 
+.. autosummary::
+    :toctree: generated
+
+    select_place
+    pairwise
+
 """
 
 import random

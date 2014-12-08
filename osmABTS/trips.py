@@ -8,6 +8,8 @@ that can be used to describe kinds of trips, while the trip generation contains
 the main driver function to generate a large list of trips based on the
 travellers and places. This module is kind of at the centre of the simulation.
 
+.. autofunction:: gen_trips
+
 """
 
 import random

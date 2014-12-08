@@ -5,6 +5,10 @@ The model class definition
 A *model* here is a complete model that is able to be simulated. It is the top
 most class in this project and is the one that mostly interacts with the users.
 
+.. autoclass:: Model
+    :members:
+    :special-members:
+
 """
 
 from .readosm import read_osm
@@ -24,16 +28,14 @@ class Model(object):
     with its instances. The major steps of the simulation and the major fields
     of this class goes as follows.
 
-    OpenStreetMap data parsing
-    --------------------------
+    .. rubric:: OpenStreetMap data parsing
 
     Before everything, the data from the OpenStreetMap website need to be
     parsed into a simpler data structure. It can be finished by giving a file
     name for the XML data file to the constructor. And the parsed results will
     be stored in the :py:attr:`raw_osm` attribute.
 
-    Simulation preparation
-    ----------------------
+    .. rubric:: Simulation preparation
 
     First a road network from the simplification of the actual OSM data is
     formed as a networkx graph. The nodes are just the traffic junctions and
@@ -57,8 +59,7 @@ class Model(object):
     Note that the network, stage, and travellers have got dependency on their
     predecessors so they need to be formed consecutively.
 
-    Simulation
-    ----------
+    .. rubric:: Simulation
 
     After the preparation on the fields :py:attr:`network`, :py:attr:`places`,
     and :py:attr:`travellers`, the actual simulation can be started. Note that

@@ -6,6 +6,23 @@ This module defined classes for nodes, ways and a shallow data structure for
 all of these raw information from OSM XML file, as well as a parser based on
 the standard expat library.
 
+It contains classes for holding information about the raw map
+
+.. autosummary::
+    :toctree: generated
+    :template: classtempl.rstt
+
+    Node
+    Way
+    RawOSM
+
+and one function for parsing the raw OSM XML file in the data structure
+
+.. autosummary::
+    :toctree: generated
+
+   read_osm
+
 """
 
 # pylint: disable=too-few-public-methods

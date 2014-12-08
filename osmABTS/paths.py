@@ -9,6 +9,10 @@ weight, and the results are going to be stored as :py:class:`ShortestPath`
 instances, which has got the essential path information carried and some
 convenience functions for getting information about the paths.
 
+.. autoclass:: ShortestPath
+    :members:
+    :special-members:
+
 """
 
 import networkx as nx

@@ -6,6 +6,10 @@ A traveller is a person with a multiple of attributes, each attributes is a
 place that is specific to the traveller. The attributes are randomly selected
 based on the weights of the kinds of places of interest.
 
+.. autoclass:: Traveller
+    :members:
+    :special-members:
+
 """
 
 from .util import select_place

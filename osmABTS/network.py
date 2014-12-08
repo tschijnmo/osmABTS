@@ -16,6 +16,10 @@ got the attribute of ``name`` for the name of the road, and the attribute of
 Also there is an attribute ``length`` for the length of the actual road and
 attribute ``highway`` for the type of the road.
 
+The driver function is in
+
+.. autofunction:: form_network_from_osm
+
 """
 
 import networkx as nx
@@ -84,7 +88,8 @@ def form_network_from_osm(raw_osm):
 
     """Forms a road network from the raw OSM data
 
-    :param raw_osm: A :py:class:`readosm.RawOSM` instance for the raw data
+    :param raw_osm: A :py:class:`osmABTS.readosm.RawOSM` instance for the raw
+        data
     :returns: A networkX graph for the road connectivity
 
     """

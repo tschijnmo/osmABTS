@@ -14,6 +14,23 @@ travellers.
 The places of interest will be bundled in a dictionary, with the name of the
 category as the key and a list of the actual places as the value.
 
+The place class:
+
+.. autosummary::
+    :toctree: generated
+    :template: classtempl.rstt
+
+    Place
+
+And functions for generating the actual list of places:
+
+.. autosummary::
+    :toctree: generated
+
+    gen_homes
+    gen_places
+    form_places_from_osm
+
 """
 
 import collections
