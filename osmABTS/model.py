@@ -176,7 +176,7 @@ class Model(object):
         self.trips = []
         for traveller_i in self.travellers:
             self.trips.extend(gen_trips(
-                time_span, self.network, self.places, trips, traveller_i
+                time_span, self.places, trips, traveller_i
                 ))
 
     def compute_paths(self):
