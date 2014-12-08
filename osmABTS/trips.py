@@ -51,7 +51,7 @@ Trip = collections.namedtuple(
 
 # The default trip
 
-DEFAULT_TRIP = [
+DEFAULT_TRIPS = [
     # Commuting to work
     Trip(
         freq=5.0, var=1.0,

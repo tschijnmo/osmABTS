@@ -34,6 +34,8 @@ class ShortestPath(object):
 
     """
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, net, trip):
 
         """Initializes a shortest path by giving the trip

@@ -103,6 +103,7 @@ class Model(object):
         self.travellers = None
         self.trips = None
         self.paths = None
+        self.time_span = 0.0
 
     def form_network(self):
 
