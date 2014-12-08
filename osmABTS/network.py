@@ -13,6 +13,8 @@ their identity, and the coordinate stored in the attribute ``coord``.
 Each edge is going to be an undirected edge connecting the nodes. They all have
 got the attribute of ``name`` for the name of the road, and the attribute of
 ``travel_time`` for the time needed to traverse the edge by a common traveller.
+Also there is an attribute ``length`` for the length of the actual road and
+attribute ``highway`` for the type of the road.
 
 """
 
@@ -134,8 +136,8 @@ def form_network_from_osm(raw_osm):
                             )
                     net.add_edge(
                         node_id, prev_node_id,
-                        travel_time=travel_time,
-                        name=tags.get('name', '')
+                        travel_time=travel_time, length=distance,
+                        highway=highway, name=tags.get('name', '')
                         )
                 # Update previous node no matter there is a previous one
                 prev_node_id = node_id
