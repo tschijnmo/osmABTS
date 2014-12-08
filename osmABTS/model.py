@@ -9,7 +9,7 @@ most class in this project and is the one that mostly interacts with the users.
 
 from .readosm import read_osm
 from .network import form_network_from_osm
-from .places import form_places_from_osm
+from .places import form_places_from_osm, DEFAULT_PLACE_CATS
 from .travellers import Traveller
 from .trips import gen_trips, DEFAULT_TRIPS
 from .paths import ShortestPath
@@ -110,14 +110,26 @@ class Model(object):
 
         self.network = form_network_from_osm(self.raw_osm)
 
-    def form_places(self):
+    def form_places(self, place_cats=None):
 
-        """Forms the dictionary of interesting places"""
+        """Forms the dictionary of interesting places
+
+        :param place_cats: A dictionary of places categories, with the category
+            name of the key and the :py:class:`places.PlaceCat` instances as
+            the value
+        :returns: A dictionary, with the category name as key and lists of
+            :py:class:`places.Place` instances as value
+
+        """
+
+        place_cats = place_cats or DEFAULT_PLACE_CATS
 
         if self.network is None:
             raise ValueError('Places cannot be generated without a network')
 
-        self.places = form_places_from_osm(self.raw_osm)
+        self.places = form_places_from_osm(
+            self.raw_osm, self.network, place_cats
+            )
 
     def form_travellers(self, number):
 
