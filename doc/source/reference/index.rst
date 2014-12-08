@@ -23,6 +23,7 @@ modules,
     osmABTS.travellers
     osmABTS.trips
     osmABTS.paths
+    osmABTS.util
 
 These modules contains functions and classes that is useful for doing non-
 straightforward works with this package.
