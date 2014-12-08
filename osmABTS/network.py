@@ -118,7 +118,7 @@ def form_network_from_osm(raw_osm):
 
         prev_node_id = None  # The previous node in the network
         # The coordinate of the previous raw node in the OSM data
-        prev_coord = way.nodes[0].coord
+        prev_coord = nodes[way.nodes[0]].coord
         distance = 0.0
 
         for node_id in way.nodes:

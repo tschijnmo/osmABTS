@@ -189,21 +189,25 @@ def read_osm(file_name):
         # For a node in a way
         elif name == 'nd':
             parent = current_state[-1]
-            if type(parent) == Way:
-                parent.nodes.append(int(attrs['ref']))
+            if isinstance(parent, tuple) and isinstance(parent[1], Way):
+                parent[1].nodes.append(int(attrs['ref']))
             else:
                 pass
         # if a tag
         elif name == 'tag':
             parent = current_state[-1]
-            if type(parent) in [Node, Way]:
-                parent.tags[attrs['k']] = attrs['v']
+            if isinstance(parent, tuple) and (
+                    isinstance(parent[1], Node) or isinstance(parent[1], Way)
+                    ):
+                (parent[1].tags)[attrs['k']] = attrs['v']
             else:
                 pass
         # For unused relation
         elif name == 'relation':
             current_state.append(None)
         elif name == 'member':
+            pass
+        elif name == 'bounds':
             pass
         else:
             raise ValueError('Unrecognized XML node %s' % name)
@@ -212,7 +216,7 @@ def read_osm(file_name):
 
         """Call back at the end of elements"""
 
-        if name in ['osm', 'tag', 'member', 'nd']:
+        if name in ['osm', 'tag', 'member', 'nd', 'bounds']:
             pass
         elif name == 'node':
             new_node = current_state.pop()

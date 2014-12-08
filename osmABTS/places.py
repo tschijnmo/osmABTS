@@ -168,8 +168,8 @@ def _find_nearest_node_4_coord(net, coord):
     nearest_node = None
     nearest_metric = None
 
-    for node in net.nodes_iter():
-        new_metric = linalg.norm(coord - node.coord)
+    for node, data in net.nodes_iter(data=True):
+        new_metric = linalg.norm(coord - data['coord'])
         if nearest_metric is None or new_metric < nearest_metric:
             nearest_metric = new_metric
             nearest_node = node
@@ -213,11 +213,11 @@ def gen_places(raw_osm, net, place_cat):
 
     places = []
 
-    for node in raw_osm.nodes:
+    for node in raw_osm.nodes.itervalues():
 
         if place_cat.node_test(node):
             node_id = _find_nearest_node_4_node(net, node)
-            name = node.tags['name']
+            name = node.tags.get('name', '')
             weight = place_cat.node_weight(node)
             places.append(
                 Place(node_id, name, weight)
@@ -225,11 +225,11 @@ def gen_places(raw_osm, net, place_cat):
         else:
             continue
 
-    for way in raw_osm.ways:
+    for way in raw_osm.ways.itervalues():
 
         if place_cat.way_test(way):
             node_id = _find_nearest_node_4_way(net, raw_osm, way)
-            name = way.tags['name']
+            name = way.tags.get('name', '')
             weight = place_cat.way_weight(way)
             places.append(
                 Place(node_id, name, weight)

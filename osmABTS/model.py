@@ -204,5 +204,5 @@ class Model(object):
         if self.paths is None:
             raise ValueError('Paths unavailable for mean travel time')
         return sum(
-            path_i.travel_time for path_i in self.paths
-            ) // len(self.paths) / self.time_span
+            path_i.travel_time() for path_i in self.paths
+            ) / len(self.paths) / self.time_span

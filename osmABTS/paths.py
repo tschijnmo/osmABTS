@@ -16,6 +16,7 @@ convenience functions for getting information about the paths.
 """
 
 import networkx as nx
+from networkx.exception import NetworkXNoPath
 
 from .util import pairwise
 
@@ -57,19 +58,26 @@ class ShortestPath(object):
             beg_node = beg.node
             end_node = end.node
 
-            self.nodes.extend(
-                nx.shortest_path(
-                    net, source=beg_node, target=end_node,
-                    weight='travel_time'
+            try:
+                self.nodes.extend(
+                    nx.shortest_path(
+                        net, source=beg_node, target=end_node,
+                        weight='travel_time'
+                        )
                     )
-                )
+            except NetworkXNoPath:
+                break
+                # hack: just take the part of the path that is reachable
 
         # get the travel time
         self.travel_times = []
         for beg, end in pairwise(self.nodes):
-            self.travel_times.append(
-                net[beg][end]['travel_time']
-                )
+            if beg != end:
+                self.travel_times.append(
+                    net[beg][end]['travel_time']
+                    )
+            else:
+                continue
 
     def travel_time(self):
 

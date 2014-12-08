@@ -115,7 +115,7 @@ def _get_places(places, traveller, locations):
 
         if loc.source == TRAVELLER_ATTR:
             result.append(
-                traveller.attr[loc.value]
+                traveller.attrs[loc.value]
                 )
         elif loc.source == RANDOM_FROM_CAT:
             result.append(
@@ -146,14 +146,14 @@ def gen_trips(time_span, places, trips, traveller):
     for trip in trips:
 
         freq = random.gauss(trip.freq, trip.var)
-        number = freq * time_span
+        number = int(freq * time_span)
         if number < 1:
             continue
 
         for i in xrange(0, number):
-            places = _get_places(places, traveller, trip.locations)
+            trip_places = _get_places(places, traveller, trip.locations)
             result.append(
-                [places[i] for i in trip.route]
+                [trip_places[i] for i in trip.route]
                 )
             continue
 
