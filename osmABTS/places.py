@@ -33,10 +33,16 @@ And functions for generating the actual list of places:
 
 """
 
+from __future__ import print_function
+
 import collections
+import sys
 
 import numpy as np
 from numpy import linalg
+
+from .util import print_title
+from .network import node2str
 
 
 class Place(object):
@@ -327,3 +333,39 @@ def form_places_from_osm(raw_osm, net, place_cats):
         continue
 
     return places_dict
+
+
+#
+# IO functions
+# ------------
+#
+
+def print_places(net, places, outf=sys.stdout):
+
+    """Prints the information about places of interest to a file
+
+    :param places: The places dictionary
+
+    """
+
+    print_title('Places of interest', outf)
+
+    for cat_name, cat_list in places.iteritems():
+
+        print('\nCategory %s' % cat_name, file=outf)
+
+        for place in cat_list:
+            print(
+                'Node %d, location: %s, name %s, weight %f' % (
+                    place.node, node2str(net, place.node),
+                    place.name, place.weight
+                    ),
+                file=outf
+                )
+            continue
+
+        continue
+
+    return None
+
+

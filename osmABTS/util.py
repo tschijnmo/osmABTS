@@ -7,8 +7,11 @@ Some utility functions
 
     select_place
     pairwise
+    print_title
 
 """
+
+from __future__ import print_function
 
 import random
 import bisect
@@ -45,3 +48,19 @@ def pairwise(iterable):
     a, b = itertools.tee(iterable)
     next(b, None)
     return itertools.izip(a, b)
+
+
+def print_title(title, outf):
+
+    """Prints a title to a file
+
+    The title will be marked up by an underline of equal signs as in the Setext
+    style of headers.
+
+    """
+
+    print("\n\n%s" % title, file=outf)
+    print("=" * len(title), file=outf)
+    print("")
+
+    return None

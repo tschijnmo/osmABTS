@@ -12,7 +12,12 @@ based on the weights of the kinds of places of interest.
 
 """
 
-from .util import select_place
+from __future__ import print_function
+
+import sys
+
+from .util import select_place, print_title
+from .network import node2str
 
 
 #
@@ -67,3 +72,31 @@ DEFAULT_ATTRS = {
     'work': 'work',
     'church': 'church',
     }
+
+
+#
+# IO functions
+# ------------
+#
+
+def print_travellers(net, travellers, outf=sys.stdout):
+
+    """Prints the information about the travellers to a file
+
+    :param travellers: A list of travellers
+
+    """
+
+    print_title('Travellers', outf)
+
+    for i, trav in enumerate(travellers):
+        print(
+            "Traveller %d, home at %s, work at %s" % (
+                i, node2str(net, trav.attrs['home'].node),
+                trav.attrs['work'].name
+                ),
+            file=outf
+            )
+        continue
+
+    return None

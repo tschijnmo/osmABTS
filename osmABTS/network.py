@@ -26,11 +26,22 @@ And we have IO functions
 
 .. autofunction:: edge2str
 
+.. autofunction:: print_network
+
+.. autofunction:: draw_network
+
 """
+
+from __future__ import print_function
+
+import sys
+import functools
 
 import networkx as nx
 from geopy.distance import vincenty
 import matplotlib.pyplot as plt
+
+from .util import print_title
 
 
 #
@@ -155,33 +166,34 @@ def form_network_from_osm(raw_osm, trim=True):
 
     # Iterate through the ways once again to remove nodes that serve only to
     # connect two points.
-    for way in raw_osm.ways.itervalues():
+    if trim:
+        for way in raw_osm.ways.itervalues():
 
-        if not _test_if_road(way):
-            continue
-
-        for node_id in way.nodes:
-            try:
-                neighb = net[node_id]
-            except KeyError:
-                continue  # skip nodes already deleted
-
-            if len(neighb) != 2:
+            if not _test_if_road(way):
                 continue
-            else:
-                n1, n2 = neighb.keys()
-                if n2 not in net[n1]:
-                    net.add_edge(
-                        n1, n2,
-                        length=neighb[n1]['length'] + neighb[n2]['length'],
-                        travel_time=(
-                            neighb[n1]['travel_time'] +
-                            neighb[n2]['travel_time']
-                            ),
-                        highway=neighb[n1]['highway'],
-                        name=neighb[n1]['name']
-                        )
-                net.remove_node(node_id)
+
+            for node_id in way.nodes:
+                try:
+                    neighb = net[node_id]
+                except KeyError:
+                    continue  # skip nodes already deleted
+
+                if len(neighb) != 2:
+                    continue
+                else:
+                    n1, n2 = neighb.keys()
+                    if n2 not in net[n1]:
+                        net.add_edge(
+                            n1, n2,
+                            length=neighb[n1]['length'] + neighb[n2]['length'],
+                            travel_time=(
+                                neighb[n1]['travel_time'] +
+                                neighb[n2]['travel_time']
+                                ),
+                            highway=neighb[n1]['highway'],
+                            name=neighb[n1]['name']
+                            )
+                    net.remove_node(node_id)
 
     return net
 
@@ -208,7 +220,7 @@ def node2str(net, node):
         )
 
     if len(edge_names) == 1:
-        prefix = 'point on '
+        prefix = 'end point of '
     else:
         prefix = 'junction of '
 
@@ -255,3 +267,38 @@ def draw_network(net, out_name):
 
     return None
 
+
+def print_network(net, outf=sys.stdout):
+
+    """Prints information about the network on a file
+
+    The file is the standard output by default.
+
+    """
+
+    prt = functools.partial(print, file=outf)
+    title = 'Network Information'
+    print_title(title, outf)
+
+    prt(
+        "Number of nodes: %d, number of edges: %d\n" % (
+            net.number_of_nodes(), net.number_of_edges()
+            )
+        )
+
+    for node_id, node_data in net.nodes_iter(data=True):
+        prt(
+            " Node %d, %s, location: (%f, %f)" % (
+                node_id, node2str(net, node_id),
+                node_data['coord'][0], node_data['coord'][1]
+                )
+            )
+
+    prt("\n")
+
+    for n1, n2 in net.edges_iter():
+        prt(edge2str(net, (n1, n2)))
+
+    prt("\n")
+
+    return None
