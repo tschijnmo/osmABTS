@@ -65,8 +65,8 @@ def main():
     print('*' * 80)
     print('\n\n\n')
 
-    model = Model(args.map)
-    print('Map file %s successfully parsed...' % args.map)
+    model = Model(args.map[0])
+    print('Map file %s successfully parsed...' % args.map[0])
 
     model.form_network()
     print('Network successfully formed...')
@@ -80,10 +80,10 @@ def main():
     if args.verbose:
         print_network(model.network)
         print_places(model.network, model.places)
-        print_travellers(model.networ, model.travellers)
+        print_travellers(model.network, model.travellers)
 
     if args.draw is not None:
-        draw_network(model.net, args.draw)
+        draw_network(model.network, args.draw)
 
     mean_time = simul_travel_time(model)
     print('Mean travel time per traveller per week %f hours' % mean_time)

@@ -224,7 +224,7 @@ def node2str(net, node):
     else:
         prefix = 'junction of '
 
-    return prefix + ', '.join(edge_names)
+    return prefix + ' and '.join(edge_names)
 
 
 def edge2str(net, edge):

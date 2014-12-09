@@ -281,7 +281,10 @@ def _work_node_test(node):
 def _work_way_test(way):
     """Tests if a way is a work place"""
     tags = way.tags
-    return 'building' in tags and (not _test_contain_work_exclude(tags))
+    return (
+        'building' in tags and 'name' in tags and
+        (not _test_contain_work_exclude(tags))
+        )
 
 
 def _restaurant_test(norw):

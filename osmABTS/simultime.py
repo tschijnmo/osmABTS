@@ -74,7 +74,7 @@ def test_sentivity_edges(model, mean_time):
                 ])
             )
 
-        model.add_edge(n1, n2, **data)
+        model.network.add_edge(n1, n2, **data)
 
     return None
 
