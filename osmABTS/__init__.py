@@ -26,6 +26,7 @@ modules,
     travellers
     trips
     paths
+    simultime
     util
 
 These modules contains functions and classes that is useful for doing non-
@@ -35,3 +36,4 @@ straightforward works with this package.
 """
 
 from .model import Model
+from .main import main
