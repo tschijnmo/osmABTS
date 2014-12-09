@@ -28,14 +28,15 @@ def select_place(places):
 
     """
 
-    weights = []
+    weights = [i.weight for i in places]
+    weights_acc = []
 
-    for place in places:
-        weights.append(sum(weights) + place.weight)
+    for i in xrange(0, len(places)):
+        weights_acc.append(sum(weights[0:(i + 1)]))
         continue
 
-    rand_n = random.uniform(0.0, weights[-1])
-    return places[bisect.bisect(weights, rand_n) - 1]
+    rand_n = random.uniform(0.0, weights_acc[-1])
+    return places[bisect.bisect(weights_acc, rand_n) - 1]
 
 
 def pairwise(iterable):

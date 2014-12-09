@@ -58,8 +58,11 @@ _HIGHWAY_SPEEDS = {
     'secondary': 35.0,
     'secondary_link': 35.0,
     'tertiary': 30.0,
+    'tertiary_link': 30.0,
     'motorway': 70.0,
     'motorway_link': 70.0,
+    'trunk': 40.0,
+    'trunk_link': 40.0,
 }
 
 
@@ -88,6 +91,10 @@ def _test_if_road(way):
     return 'highway' in tags and tags['highway'] not in [
         'footway',
         'service',
+        'unclassified',
+        'steps',
+        'cycleway',
+        'path',
         ]
 
 

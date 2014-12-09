@@ -361,7 +361,8 @@ def print_places(net, places, outf=sys.stdout):
             print(
                 'Node %d, location: %s, name %s, weight %f' % (
                     place.node, node2str(net, place.node),
-                    place.name, place.weight
+                    place.name.encode('ascii', 'replace'),
+                    place.weight
                     ),
                 file=outf
                 )

@@ -94,7 +94,7 @@ def main():
 
     if args.draw is not None:
         draw_network(model.network, args.draw)
-        print('Network drawn to file %d', args.draw)
+        print('Network drawn to file %s' % args.draw)
 
     mean_time = simul_travel_time(model)
     print('Mean travel time per traveller per week %f hours' % mean_time)
