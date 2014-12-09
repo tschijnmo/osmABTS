@@ -153,7 +153,7 @@ def form_network_from_osm(raw_osm, trim=True):
                 net.add_edge(
                     node_id, prev_node_id,
                     travel_time=travel_time, length=distance,
-                    highway=highway, name=tags.get('name', '')
+                    highway=highway, name=tags.get('name', 'Unamed')
                     )
 
             prev_node_id = node_id

@@ -43,6 +43,11 @@ def test_sensitivity_edges(model, mean_time):
     Each edge is going to be temporarily removed to test the sensitity of the
     mean travel time for it.
 
+    A very primitive parallelization is made here. If it is detected that the
+    code is run under an MPI environment, only part of the edges will be test
+    in the current process. Full result can be obtained by external shell
+    scripts.
+
     :param model: The model, with everying already setted up
     :param mean_time: The mean_time before any edge is removed
 
@@ -51,7 +56,24 @@ def test_sensitivity_edges(model, mean_time):
     print_title('Edge sensitivity analysis', sys.stdout)
 
     # A shallow copy of the edges
-    edges = model.network.edges()
+    edges = [
+        edge for edge in model.network.edges()
+        if model.network[edge[0]][edge[1]]['highway'] != 'residential'
+        ]
+    n_edge = len(edges)
+    print(' %s edges to be tested...' % n_edge)
+
+    try:
+        from mpi4py import MPI
+    except ImportError:
+        pass
+    else:
+        comm = MPI.COMM_WORLD
+        rank = comm.Get_rank()
+        size = comm.Get_size()
+        # distribute work by round-robin
+        edges = edges[rank::size]
+        print(' rank %d get allocated %d edges...' % (rank, len(edges)))
 
     print("Now we remove streets between nodes, and find the new travel time")
     print(" Street name / node 1 / node 2 / new time / percentage ")
@@ -68,10 +90,12 @@ def test_sensitivity_edges(model, mean_time):
         new_time = simul_travel_time(model)
         percentage = (new_time - mean_time) / mean_time
         print(
-            ' / '.join([
-                street_name, end1, end2,
-                str(new_time), str(percentage)
-                ])
+            'SA: ' + (
+                ' / '.join([
+                    street_name, end1, end2,
+                    str(new_time), str(percentage)
+                    ])
+                )
             )
 
         model.network.add_edge(n1, n2, **data)
