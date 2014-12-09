@@ -95,6 +95,9 @@ def _test_if_road(way):
         'steps',
         'cycleway',
         'path',
+        'track',
+        'pedestrian',
+        'proposed',
         ]
 
 
