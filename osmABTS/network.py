@@ -39,7 +39,6 @@ import functools
 
 import networkx as nx
 from geopy.distance import vincenty
-import matplotlib.pyplot as plt
 
 from .util import print_title
 
@@ -265,6 +264,8 @@ def draw_network(net, out_name):
     library.
 
     """
+
+    import matplotlib.pyplot as plt
 
     pos = {
         key: data['coord']
