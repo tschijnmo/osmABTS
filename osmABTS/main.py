@@ -18,7 +18,7 @@ from .model import Model
 from .network import print_network, draw_network
 from .places import print_places
 from .travellers import print_travellers
-from .simultime import simul_travel_time, test_sentivity_edges
+from .simultime import simul_travel_time, test_sensitivity_edges
 
 
 def main():
@@ -60,6 +60,7 @@ def main():
 
     args = parser.parse_args()
 
+    print('\n\n\n')
     print('*' * 80)
     print('Activity-based traffic simulation on OSM map'.center(80))
     print('*' * 80)
@@ -70,12 +71,21 @@ def main():
 
     model.form_network()
     print('Network successfully formed...')
+    print(' %d nodes and %d edges' % (
+        model.network.number_of_nodes(), model.network.number_of_edges()
+        ))
+
     model.form_places()
     print('Places of interest recognized...')
+    for cat_name, places_list in model.places.iteritems():
+        print('     %s: %d' % (cat_name, len(places_list)))
+
     model.form_travellers(args.travellers)
     print(' %d travellers successfully generated ...' % args.travellers)
+
     model.gen_trips(args.time)
-    print(' Trips for %f weeks of time successfully generated' % args.time)
+    print('Trips for %f weeks of time successfully generated' % args.time)
+    print('  total number %d' % len(model.trips))
 
     if args.verbose:
         print_network(model.network)
@@ -84,12 +94,13 @@ def main():
 
     if args.draw is not None:
         draw_network(model.network, args.draw)
+        print('Network drawn to file %d', args.draw)
 
     mean_time = simul_travel_time(model)
     print('Mean travel time per traveller per week %f hours' % mean_time)
 
     if args.sensitivity:
-        test_sentivity_edges(model, mean_time)
+        test_sensitivity_edges(model, mean_time)
 
     if args.script is not None:
         print('Running custom python script %s' % args.script)
@@ -98,8 +109,8 @@ def main():
         except IOError:
             print('Unable to open script')
             raise
-        interpreter = code.InteractiveInterpreter(locas={'model': model})
-        interpreter.runcode(source, filename=args.script)
+        interpreter = code.InteractiveInterpreter(locals={'model': model})
+        interpreter.runsource(source, filename=args.script)
 
     return 0
 

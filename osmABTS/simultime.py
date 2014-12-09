@@ -36,7 +36,7 @@ def simul_travel_time(model):
     return mean_time
 
 
-def test_sentivity_edges(model, mean_time):
+def test_sensitivity_edges(model, mean_time):
 
     """Tests the sensitivity of the mean travel time for each edge
 
