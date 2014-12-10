@@ -12,7 +12,8 @@ analysis towards the graph or runs optional script.
 from __future__ import print_function
 
 import argparse
-import code
+
+import networkx as nx
 
 from .model import Model
 from .network import print_network, draw_network
@@ -104,13 +105,10 @@ def main():
 
     if args.script is not None:
         print('Running custom python script %s' % args.script)
-        try:
-            source = open(args.script, 'r').read()
-        except IOError:
-            print('Unable to open script')
-            raise
-        interpreter = code.InteractiveInterpreter(locals={'model': model})
-        interpreter.runsource(source, filename=args.script)
+        execfile(
+            args.script, {},
+            {'model': model, 'nx': nx}
+            )
 
     return 0
 
