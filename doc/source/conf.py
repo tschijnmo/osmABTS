@@ -247,7 +247,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'osmABTS', u'osmABTS Documentation',
-   u'Tschijnmo and Schuw TSCHAU', 'osmABTS', 'One line description of project.',
+   u'Shuo ZHAO', 'osmABTS', 'One line description of project.',
    'Miscellaneous'),
 ]
 
